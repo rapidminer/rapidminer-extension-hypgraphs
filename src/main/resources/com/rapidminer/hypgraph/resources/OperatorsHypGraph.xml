@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<operators name="hyp_graph" version="6.0" docbundle="com/rapidminer/hypgraph/resources/i18n/OperatorsDocHypGraph">
+        <group key="hyp_graph">
+           <operator>
+              <key>hyp_graph</key>
+              <icon>hyp_graph.png</icon>
+              <class>com.rapidminer.hypgraph.HypGraph</class>
+           </operator>
+         </group>
+</operators>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<operatorHelp lang="en_EN">
+    <!--  This is an example how to specify the translation of operator keys to names. -->
+
+    <!-- This is how group keys are translated: -->
+    <operator>
+    	<key>hyp_graph</key>
+    	<name>HypGraph</name>
+    </operator>
+    <group>
+      <key>hypgraph</key>
+      <name>HypGraph</name>
+    </group>
+
+</operatorHelp>
