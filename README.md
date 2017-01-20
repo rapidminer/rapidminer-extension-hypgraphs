@@ -1,20 +1,19 @@
-RapidMiner Extension Template
+RapidMiner HypGraphs Extension
 =============================
 
-A template project for creating a RapidMiner Studio extension. 
+### Description
 
-### Prerequisite
-* Requires Gradle 2.3+ (get it [here](http://gradle.org/installation) or use the Gradle wrapper shipped with this template)
+This extension implements the HypGraphs modeling and analysis approach proposed by Atzmueller et al. (2016).
+It calculates the evidence score that a hypothesis transition matrix is similar to a given data matrix.
+For interference calculation the HypTrails algorithm (Singer et al. 2015) is used, by the implementation of Florian Lemmerich (https://bitbucket.org/florian_lemmerich/hyptrails4j).
 
-### Getting started
-1. Clone the extension template
 
-2. Change the extension settings in _build.gradle_ (e.g. replace 'Template' by the desired extension name)
+### Literature
 
-3. Initialize the extension project by executing the _initializeExtensionProject_ Gradle task (e.g. via 'gradlew initializeExtensionProject')
+ Atzmueller et al. (2016):
+Atzmueller, Martin; Schmidt, Andreas; Kloepper, Benjamin and Arnu, David (2016)
+HypGraphs: An Approach for Modeling and Comparing Graph-Based and Sequential Hypotheses. Proc. ECML-PKDD Workshop on New Frontiers in Mining Complex Patterns (NFMCP), Riva del Garda, Italy, 2016
 
-4. Add an extension icon by placing an image named "icon.png" in  _src/main/resources/META-INF/_. 
-
-5. Build and install your extension by executing the _installExtension_ Gradle task 
-
-6. Start RapidMiner Studio and check whether your extension has been loaded
+Singer et al. (2015):
+Singer, Phillip; Helic, Denis; Hotho Andreas and Strohmaier Markus (2015) 
+HypTrails: A Bayesian Approach for Comparing Hypotheses About Human Trails on the Web, Proc. International World Wide Web Conference, Florence, Italy, 2015 

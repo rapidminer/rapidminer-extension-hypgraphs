@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <operators name="hyp_graphs" version="6.0" docbundle="com/rapidminer/hypgraphs/resources/i18n/OperatorsDocHypGraphs">
-        <group key="hyp_grapsh">
+        <group key="hyp_graphs">
            <operator>
               <key>hyp_graphs</key>
               <icon>hyp_graphs.png</icon>
