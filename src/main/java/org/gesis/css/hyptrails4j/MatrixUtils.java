@@ -18,27 +18,31 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealMatrixChangingVisitor;
 import org.apache.commons.math3.linear.RealMatrixPreservingVisitor;
 
+
 public class MatrixUtils {
+
 	/**
 	 * Floors each entry of a matrix.
-	 * 
+	 *
 	 * @param m
 	 * @return The sum of all remainings by floors
 	 */
 	public static double floor(RealMatrix m) {
 		return m.walkInColumnOrder(new RealMatrixChangingVisitor() {
+
 			double loss = 0;
 
+			@Override
 			public double visit(int row, int column, double value) {
 				double newValue = Math.floor(value);
 				loss += value - newValue;
 				return newValue;
 			}
 
-			public void start(int rows, int columns, int startRow, int endRow,
-					int startColumn, int endColumn) {
-			}
+			@Override
+			public void start(int rows, int columns, int startRow, int endRow, int startColumn, int endColumn) {}
 
+			@Override
 			public double end() {
 				return loss;
 			}
@@ -47,22 +51,24 @@ public class MatrixUtils {
 
 	/**
 	 * Computes the sum of all entries in a Matrix.
-	 * 
+	 *
 	 * @param m
 	 * @return
 	 */
 	public static double sum(RealMatrix m) {
 		return m.walkInColumnOrder(new RealMatrixPreservingVisitor() {
+
 			double sum;
 
+			@Override
 			public void visit(int row, int column, double value) {
 				sum += value;
 			}
 
-			public void start(int rows, int columns, int startRow, int endRow,
-					int startColumn, int endColumn) {
-			}
+			@Override
+			public void start(int rows, int columns, int startRow, int endRow, int startColumn, int endColumn) {}
 
+			@Override
 			public double end() {
 				return sum;
 			}
@@ -70,8 +76,7 @@ public class MatrixUtils {
 	}
 
 	/**
-	 * Returns a List of all Matrix indices in DESCENDING order according to the
-	 * matrix values
+	 * Returns a List of all Matrix indices in DESCENDING order according to the matrix values
 	 */
 	public static List<int[]> getIndicesSorted(final RealMatrix m) {
 		List<int[]> result = new ArrayList<int[]>();
@@ -81,6 +86,7 @@ public class MatrixUtils {
 			}
 		}
 		Collections.sort(result, new Comparator<int[]>() {
+
 			@Override
 			public int compare(int[] o1, int[] o2) {
 				double val1 = m.getEntry(o1[0], o1[1]);
@@ -93,7 +99,7 @@ public class MatrixUtils {
 
 	/**
 	 * Returns the indices (row/col) of the matrix entry with the maximum value
-	 * 
+	 *
 	 * @param matrix
 	 * @return
 	 */
@@ -116,7 +122,7 @@ public class MatrixUtils {
 
 	/**
 	 * Returns the sum of all entries in this matrix row.
-	 * 
+	 *
 	 * @param matrix
 	 * @param rowIdx
 	 * @return
@@ -130,9 +136,8 @@ public class MatrixUtils {
 	}
 
 	/**
-	 * Returns a square matrix, all entries being 1. Not to intermix with an
-	 * identity matrix.
-	 * 
+	 * Returns a square matrix, all entries being 1. Not to intermix with an identity matrix.
+	 *
 	 * @param dimensions
 	 * @return
 	 */
@@ -147,9 +152,8 @@ public class MatrixUtils {
 	}
 
 	/**
-	 * Reads a matrix from a line based file; Separator is assumed to be a
-	 * single space
-	 * 
+	 * Reads a matrix from a line based file; Separator is assumed to be a single space
+	 *
 	 * @param f
 	 *            to be read the matrix from
 	 * @return
@@ -160,16 +164,14 @@ public class MatrixUtils {
 	}
 
 	/**
-	 * Reads a matrix from a line based file with a parameterized separator
-	 * string
-	 * 
+	 * Reads a matrix from a line based file with a parameterized separator string
+	 *
 	 * @param f
 	 *            to be read the matrix from
 	 * @return
 	 * @throws IOException
 	 */
-	public static RealMatrix readMatrixFromFile(File f, String separator)
-			throws IOException {
+	public static RealMatrix readMatrixFromFile(File f, String separator) throws IOException {
 		int noLines = countLines(f);
 		OpenMapRealMatrix m = new OpenMapRealMatrix(noLines, noLines);
 		Scanner scanner = new Scanner(f);
@@ -187,28 +189,25 @@ public class MatrixUtils {
 	}
 
 	/**
-	 * Writes a matrix to a file (line-based format, separator is a single
-	 * space).
-	 * 
+	 * Writes a matrix to a file (line-based format, separator is a single space).
+	 *
 	 * @param m
 	 * @param f
 	 * @throws IOException
 	 */
-	public static void writeMatrixToFile(RealMatrix m, File f)
-			throws IOException {
+	public static void writeMatrixToFile(RealMatrix m, File f) throws IOException {
 		writeMatrixToFile(m, f, " ");
 	}
 
 	/**
 	 * Writes a matrix to a line based file, separator can be specified.
-	 * 
+	 *
 	 * @param m
 	 * @param f
 	 * @param separator
 	 * @throws IOException
 	 */
-	public static void writeMatrixToFile(RealMatrix m, File f, String separator)
-			throws IOException {
+	public static void writeMatrixToFile(RealMatrix m, File f, String separator) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(f));
 
 		for (int row = 0; row < m.getRowDimension(); row++) {
@@ -226,8 +225,7 @@ public class MatrixUtils {
 
 	/**
 	 * Count the number of lines in a file. Taken from:
-	 * http://stackoverflow.com/questions/453018/number-of-lines-in-a
-	 * -file-in-java
+	 * http://stackoverflow.com/questions/453018/number-of-lines-in-a -file-in-java
 	 */
 	public static int countLines(File file) throws IOException {
 		InputStream is = new BufferedInputStream(new FileInputStream(file));
@@ -238,8 +236,9 @@ public class MatrixUtils {
 			boolean endsWithoutNewLine = false;
 			while ((readChars = is.read(c)) != -1) {
 				for (int i = 0; i < readChars; ++i) {
-					if (c[i] == '\n')
+					if (c[i] == '\n') {
 						++count;
+					}
 				}
 				endsWithoutNewLine = (c[readChars - 1] != '\n');
 			}

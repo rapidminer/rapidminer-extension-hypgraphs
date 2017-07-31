@@ -4,7 +4,7 @@
            <operator>
               <key>hyp_graphs</key>
               <icon>hyp_graphs.png</icon>
-              <class>com.rapidminer.hypgraphs.HypGraphs</class>
+              <class>com.rapidminer.extension.hypgraphs.HypGraphs</class>
            </operator>
          </group>
 </operators>

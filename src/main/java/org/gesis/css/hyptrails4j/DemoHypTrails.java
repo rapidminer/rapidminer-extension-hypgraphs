@@ -3,10 +3,12 @@ package org.gesis.css.hyptrails4j;
 import org.apache.commons.math3.linear.OpenMapRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 
+
 public class DemoHypTrails {
 
 	/**
 	 * A demonstration of the HypTrails4j implementation
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -24,17 +26,14 @@ public class DemoHypTrails {
 		// It is converted in a proper conjugate prior;
 		// The second parameter is the k (How "strong" is the believe in our
 		// hypothesis)
-		RealMatrix prior1 = DirichletPriorGenerator.computeOverallPrior(
-				belief1, 2);
+		RealMatrix prior1 = DirichletPriorGenerator.computeOverallPrior(belief1, 2);
 
 		// In Hyptrails, you compare two hypotheses, so we need another
 		// We will compare against a uniform matrix, that means all state
 		// transitions are equally likely:
-		RealMatrix belief2 = MatrixUtils.uniformMatrix(belief1
-				.getColumnDimension());
+		RealMatrix belief2 = MatrixUtils.uniformMatrix(belief1.getColumnDimension());
 		// Again we compute a proper prior for that believe:
-		RealMatrix prior2 = DirichletPriorGenerator.computeOverallPrior(
-				belief2, 2);
+		RealMatrix prior2 = DirichletPriorGenerator.computeOverallPrior(belief2, 2);
 
 		// For both hypotheses we compute the evidence (to be precise, the
 		// log-evidence)

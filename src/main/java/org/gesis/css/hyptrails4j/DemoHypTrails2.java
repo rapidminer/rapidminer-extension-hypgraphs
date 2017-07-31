@@ -5,31 +5,27 @@ import java.io.IOException;
 
 import org.apache.commons.math3.linear.RealMatrix;
 
+
 public class DemoHypTrails2 {
 
 	/**
-	 * Another demonstration of the HypTrails4j implementation, featuring
-	 * loading data and believes from files.
+	 * Another demonstration of the HypTrails4j implementation, featuring loading data and believes
+	 * from files.
 	 */
 
 	public static void main(String[] args) throws IOException {
 
 		// we can also load the transition matrix from a file
-		RealMatrix data = MatrixUtils.readMatrixFromFile(new File(
-				"demoData/data.dat"));
+		RealMatrix data = MatrixUtils.readMatrixFromFile(new File("demoData/data.dat"));
 
 		// and the belief matrix, too
-		RealMatrix belief1 = MatrixUtils.readMatrixFromFile(new File(
-				"demoData/hypothesis.dat"));
-		RealMatrix prior1 = DirichletPriorGenerator.computeOverallPrior(
-				belief1, 2);
+		RealMatrix belief1 = MatrixUtils.readMatrixFromFile(new File("demoData/hypothesis.dat"));
+		RealMatrix prior1 = DirichletPriorGenerator.computeOverallPrior(belief1, 2);
 
 		// Then, the rest can be done as before:
 		// ... create 2 hypothesis
-		RealMatrix belief2 = MatrixUtils.uniformMatrix(belief1
-				.getColumnDimension());
-		RealMatrix prior2 = DirichletPriorGenerator.computeOverallPrior(
-				belief2, 2);
+		RealMatrix belief2 = MatrixUtils.uniformMatrix(belief1.getColumnDimension());
+		RealMatrix prior2 = DirichletPriorGenerator.computeOverallPrior(belief2, 2);
 
 		// ...compute scores
 		double evidence1 = EvidenceComputer.computeLogEvidence(prior1, data);

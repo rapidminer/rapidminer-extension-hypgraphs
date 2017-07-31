@@ -13,28 +13,26 @@ import java.util.Scanner;
 import org.apache.commons.math3.linear.OpenMapRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 
+
 public class TransitionsUtils {
 
 	public static final Random r = new Random();
 
 	/**
 	 * Writes a set of transitions to a file.
-	 * 
+	 *
 	 * @param filename
 	 * @param transitions
 	 * @param separator
 	 * @param prefix
 	 * @throws IOException
 	 */
-	public static void writeTransitionsToFile(String filename,
-			List<int[]> transitions, String separator, String prefix)
+	public static void writeTransitionsToFile(String filename, List<int[]> transitions, String separator, String prefix)
 			throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
-				filename)));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filename)));
 
 		for (int[] transition : transitions) {
-			writer.write(prefix + transition[0] + separator + transition[1]
-					+ System.lineSeparator());
+			writer.write(prefix + transition[0] + separator + transition[1] + System.lineSeparator());
 			writer.flush();
 		}
 		writer.close();
@@ -51,7 +49,7 @@ public class TransitionsUtils {
 
 	/**
 	 * Converts a list of transitions to a transition matrix
-	 * 
+	 *
 	 * @param transitions
 	 * @return
 	 */
@@ -62,18 +60,15 @@ public class TransitionsUtils {
 	}
 
 	/**
-	 * Converts a list of transitions to a transition matrix with a fixed number
-	 * of dimensions (e.g., to ensure equal matrix sizes if samples are drawn
-	 * from transitions)
-	 * 
+	 * Converts a list of transitions to a transition matrix with a fixed number of dimensions
+	 * (e.g., to ensure equal matrix sizes if samples are drawn from transitions)
+	 *
 	 * @param transitions
 	 * @param numberOfDimensions
 	 * @return
 	 */
-	public static RealMatrix computeTransitionMatrix(List<int[]> transitions,
-			int numberOfDimensions) {
-		RealMatrix m = new OpenMapRealMatrix(numberOfDimensions,
-				numberOfDimensions);
+	public static RealMatrix computeTransitionMatrix(List<int[]> transitions, int numberOfDimensions) {
+		RealMatrix m = new OpenMapRealMatrix(numberOfDimensions, numberOfDimensions);
 		for (int[] t : transitions) {
 			m.addToEntry(t[0], t[1], 1);
 		}
@@ -89,8 +84,7 @@ public class TransitionsUtils {
 		return max;
 	}
 
-	public static List<int[]> readFromFile(File file)
-			throws FileNotFoundException {
+	public static List<int[]> readFromFile(File file) throws FileNotFoundException {
 		ArrayList<int[]> result = new ArrayList<int[]>();
 		Scanner scanner = new Scanner(file);
 		while (scanner.hasNextLine()) {
@@ -105,15 +99,13 @@ public class TransitionsUtils {
 
 	private static int[] parseLine(String line) {
 		String[] tokens = line.split(" ");
-		return new int[] { Integer.parseInt(tokens[0]),
-				Integer.parseInt(tokens[1]) };
+		return new int[] { Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]) };
 	}
 
 	/**
 	 * Picking a random sample without replacement
 	 */
-	public static <T> List<T> pickSample(List<T> dataset,
-			int noSamplesStillNeeded) {
+	public static <T> List<T> pickSample(List<T> dataset, int noSamplesStillNeeded) {
 		List<T> result = new ArrayList<T>(noSamplesStillNeeded);
 		// int nPicked = 0;
 		int nLeft = dataset.size();

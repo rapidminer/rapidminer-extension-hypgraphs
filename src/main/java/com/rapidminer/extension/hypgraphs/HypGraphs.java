@@ -1,19 +1,18 @@
-package com.rapidminer.hypgraphs;
+package com.rapidminer.extension.hypgraphs;
 
 import java.util.Iterator;
 import java.util.List;
 
+import org.antlr.v4.runtime.atn.SemanticContext.Operator;
 import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.gesis.css.hyptrails4j.DirichletPriorGenerator;
 import org.gesis.css.hyptrails4j.EvidenceComputer;
 import org.gesis.css.hyptrails4j.MatrixUtils;
 
-import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.ExampleSetFactory;
-import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.UserError;
