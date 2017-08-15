@@ -7,6 +7,10 @@
     	<key>hyp_graphs</key>
     	<name>HypGraphs</name>
     </operator>
+    <operator>
+        <key>attribute_2_transition_matrix</key>
+        <name>Attribute to Transition Matrix</name>
+    </operator>
     <group>
       <key>hypgraphs</key>
       <name>HypGraphs</name>

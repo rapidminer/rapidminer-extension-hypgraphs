@@ -7,6 +7,9 @@ buildscript {
 
 plugins { id 'com.rapidminer.extension' version '0.8.0' }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 // Define Maven artifact repositories
 repositories {
     jcenter()
@@ -44,7 +47,7 @@ extensionConfig {
 
 	// define RapidMiner version and extension dependencies
 	dependencies {
-       rapidminer '7.1.0'
+       rapidminer '7.5.0'
 		//extension namespace: 'text', version: '6.1.0'
 	}
 }

@@ -5,7 +5,7 @@
               xsi:schemaLocation="http://rapid-i.com/schemas/documentation/reference/1.0 ">
 
     <operator key="operator.hypgraphs:hyp_graphs" locale="en"
-              version="6.0.000">
+              version="7.5.000">
         <title>HypGraphs Operator</title>
         <synopsis>This Operator implements the HypGraphs modeling and analysis approach proposed by Atzmueller et al. (2016) and calculates the evidence score that a hypothesis transition matrix is similar to a given data matrix.
         </synopsis>
@@ -13,28 +13,31 @@
             <paragraph> The method compares two state transition matrices that represent sequences of events and returns an evidence score that indicates if the hypothesis data is similar to the original data. The closer the hypothesis evidence score is to the evidence score of the data itself, the more likely is that the hypothesis follows the same model.
 				The inference step utilizes the HypTrails algorithm (Singer et al. 2015), using the implementation of Florian Lemmerich (https://bitbucket.org/florian_lemmerich/hyptrails4j).
 			</paragraph>
+            <paragraph>References:</paragraph>
             <paragraph>
-   		        Atzmueller et al. (2016)
-				Atzmueller M, Schmidt A, Kloepper B and Arnu D (2016)
-				HypGraphs: An Approach for Modeling and Comparing Graph-Based and Sequential Hypotheses. Proc. ECML-PKDD Workshop on New Frontiers in Mining Complex Patterns (NFMCP), Riva del Garda, Italy, 2016
+				Atzmueller M., Schmidt A., Kloepper B. and Arnu D.:
+				<em>HypGraphs: An Approach for Modeling and Comparing Graph-Based and Sequential Hypotheses.</em>
+                Proc. ECML-PKDD Workshop on New Frontiers in Mining Complex Patterns (NFMCP), Riva del Garda, Italy, 2016
 			</paragraph>
             <paragraph>
-				Singer et al. (2015)
-				Singer P, Helic D, Hotho A and Strohmaier M (2015) 
-				HypTrails: A Bayesian Approach for Comparing Hypotheses About Human Trails on the Web, Proc. International World Wide Web Conference, Florence, Italy, 2015 
+				Singer P., Helic D., Hotho A. and Strohmaier M.:
+                <em>HypTrails: A Bayesian Approach for Comparing Hypotheses About Human Trails on the Web</em>.
+                Proc. International World Wide Web Conference, Florence, Italy, 2015
             </paragraph>
         </text>
         <inputPorts>
             <port name="data" type="com.rapidminer.example.ExampleSet">
-                An example set representing the transition matrix describing the normal behavior. The example set needs to have same number of attributes and example (i.e. a quadratic matrix) 
+                An ExampleSet representing the transition matrix describing the normal behavior. The ExampleSet needs to have same number of Attributes and Examples (i.e. a quadratic matrix)
             </port>
             <port name="hypothesis" type="com.rapidminer.example.ExampleSet">
-                The transition matrix describing the hypothesis data that should be compared to the normal state. The example set needs to have same number of attributes and example (i.e. a quadratic matrix) 
+                The transition matrix describing the hypothesis data that should be compared to the normal state. The ExampleSet needs to have same number of attributes and example (i.e. a quadratic matrix)
             </port>
         </inputPorts>
         <outputPorts>
             <port name="evidence" type="com.rapidminer.example.ExampleSet">
-                The evidence scores calculated by HypGraphs. The data evidence value is the evidence score for the data itself, the hypothesis score is the score for the hypothesis matrix and the random score is based on the uniform matrix.  
+                The evidence scores calculated by HypGraphs.
+                The data evidence value is the evidence score for the data itself, the hypothesis score is the score for the hypothesis matrix and the random score is based on the uniform matrix.
+                The evidence scores are not normalized, so they cannot directly be compared to the results of other data sets.
             </port>
             <port name="prior" type="com.rapidminer.example.ExampleSet">
                 The prior matrix based on the input hypothesis.
@@ -43,41 +46,134 @@
 
         <!-- description of the parameters and the corresponding values -->
         <parameters>
-            <parameter key="k" type="integer">
-                Belief factor for the given hypothesis. The higher the value of k the stronger is the belief in the hypothesis; with a lower value of k the hypothesis is assigned more tolerance.
+            <parameter key="belief factor" type="integer">
+                The belief factor k for the given hypothesis.
+                The lower the value of k is, the stronger is the belief in the hypothesis.
+                With a higher value of k the hypothesis is assigned more tolerance, so the data is more likely to be evaluated similar to the original data.
             </parameter>
         </parameters>
-
-<!--         <tutorialProcesses> -->
-<!--             <tutorialProcess key="process.python.clustering" title="Applying HypGraphs to test data"> -->
-<!--                 <description> -->
-<!--                     <paragraph> -->
-<!--                         The tutorial process loads and compares two transition matrices -->
-<!--                     </paragraph> -->
-<!--                 </description> -->
-<!--                 <process version="6.4.000"> -->
-<!--                     <context> -->
-<!--                         <input/> -->
-<!--                         <output/> -->
-<!--                         <macros/> -->
-<!--                     </context> -->
-<!--                     <operator activated="true" class="process" compatibility="6.4.000" expanded="true" name="Process"> -->
-<!--                         <process expanded="true"> -->
-<!--                             <operator activated="true" class="retrieve" compatibility="6.4.000" expanded="true" height="60" name="Retrieve Iris" width="90" x="380" y="210"> -->
-<!--                                 <parameter key="repository_entry" value="//Samples/data/Iris"/> -->
-<!--                             </operator> -->
-<!--                             <connect from_op="Retrieve Iris" from_port="output" to_port="result 1"/> -->
-<!--                             <portSpacing port="source_input 1" spacing="0"/> -->
-<!--                             <portSpacing port="sink_result 1" spacing="0"/> -->
-<!--                             <portSpacing port="sink_result 2" spacing="0"/> -->
-<!--                         </process> -->
-<!--                     </operator> -->
-<!--                 </process> -->
-<!--             </tutorialProcess> -->
-<!--         </tutorialProcesses> -->
+        <tutorialProcesses>
+            <tutorialProcess key="process.hypgraphs.hypGraphsExample1" title="Calculating the evidence score for a sample hypothesis">
+                <description>
+                    <paragraph>
+                        This tutorial Process takes the Iris data and builds the transition matrix of the label Attribute for the ordered and shuffled labels.
+                        The HypGraphs takes the transition matrix of ordered Examples as reference data and the shuffled Examples as testing hypothesis.
+                        The resulting evidence score for the hypothesis is very low and close to the evidence score of a pure random transition distribution.
+                    </paragraph>
+                </description>
+                <process version="7.5.003">
+                    <context>
+                        <input/>
+                        <output/>
+                        <macros/>
+                    </context>
+                    <operator activated="true" class="process" compatibility="7.6.000-SNAPSHOT" expanded="true" name="Process">
+                        <process expanded="true">
+                            <operator activated="true" class="retrieve" compatibility="7.6.000-SNAPSHOT" expanded="true" height="68" name="Retrieve Iris" width="90" x="45" y="34">
+                                <parameter key="repository_entry" value="//Samples/data/Iris"/>
+                            </operator>
+                            <operator activated="true" class="multiply" compatibility="7.6.000-SNAPSHOT" expanded="true" height="103" name="Multiply" width="90" x="179" y="34"/>
+                            <operator activated="true" class="shuffle" compatibility="7.6.000-SNAPSHOT" expanded="true" height="82" name="Shuffle" width="90" x="313" y="595">
+                                <parameter key="use_local_random_seed" value="true"/>
+                                <parameter key="local_random_seed" value="5"/>
+                            </operator>
+                            <operator activated="true" class="hypgraphs:attribute_2_transition_matrix" compatibility="0.2.000" expanded="true" height="82" name="Attribute to Transition Matrix (2)" width="90" x="447" y="595">
+                                <parameter key="transition_attribute_name" value="label"/>
+                                <description align="center" color="green" colored="true" width="126">Shufling the data leads to another matrix, where the transitions are nearly equally distributed.</description>
+                            </operator>
+                            <operator activated="true" class="hypgraphs:attribute_2_transition_matrix" compatibility="0.2.000" expanded="true" height="82" name="Attribute to Transition Matrix" width="90" x="447" y="34">
+                                <parameter key="transition_attribute_name" value="label"/>
+                                <description align="center" color="green" colored="true" width="126">Calculates the transition matrix for the label Attribute.&lt;br&gt;&lt;br&gt;There are nine possible transitions for the three different values (thus the result is a 3x3 ExampleSet).&lt;br&gt;&lt;br&gt;Because the Examples are ordered, most transitions are from one value to itself.</description>
+                            </operator>
+                            <operator activated="true" class="hypgraphs:hyp_graphs" compatibility="0.2.000" expanded="true" height="82" name="HypGraphs" width="90" x="849" y="34">
+                                <parameter key="belief factor" value="5"/>
+                            </operator>
+                            <connect from_op="Retrieve Iris" from_port="output" to_op="Multiply" to_port="input"/>
+                            <connect from_op="Multiply" from_port="output 1" to_op="Attribute to Transition Matrix" to_port="exa"/>
+                            <connect from_op="Multiply" from_port="output 2" to_op="Shuffle" to_port="example set input"/>
+                            <connect from_op="Shuffle" from_port="example set output" to_op="Attribute to Transition Matrix (2)" to_port="exa"/>
+                            <connect from_op="Attribute to Transition Matrix (2)" from_port="trans" to_op="HypGraphs" to_port="hypothesis"/>
+                            <connect from_op="Attribute to Transition Matrix" from_port="trans" to_op="HypGraphs" to_port="data"/>
+                            <connect from_op="HypGraphs" from_port="evidence" to_port="result 1"/>
+                            <portSpacing port="source_input 1" spacing="0"/>
+                            <portSpacing port="sink_result 1" spacing="0"/>
+                            <portSpacing port="sink_result 2" spacing="0"/>
+                            <description align="center" color="green" colored="true" height="419" resized="true" width="250" x="783" y="131">Comparing the two transition matrix examples.&lt;br&gt;&lt;br&gt;The resulting evidence score for the test hypothesis (the shuffled ExampleSet) is very close to the evidence score for a uniform distributed transition matrix.&lt;br&gt;&lt;br&gt;The interpretation is, that it is very unlikely that the hypothesis data have the same generating process as the test data.&lt;br&gt;&lt;br&gt;If the belief factor k is set to 1, there is a very low tolerance for variance to the assumed normal behaviour. In this case the evidence scores for the hypothesis and the random transition are equal.</description>
+                        </process>
+                    </operator>
+                </process>
+            </tutorialProcess>
+            <tutorialProcess key="process.hypgraphs.hypGraphsExample2" title="Comparing the HypGraphs result for different values of the belief factor parameter.">
+                <description>
+                    <paragraph>
+                        This tutorial Process takes the Iris data and builds the transition matrix the label Attribute.
+                        Then the transition matrix for the original and a shuffled ExampleSet are compared by the HypGraphs Operator for different values for the <em>belief factor</em> parameter.
+                        The observed effect is, that for a higher belief factor the evidence score for the hypothesis data is dragged more into the direction of the original hypothesis.
+                        Thus the algorithm accepts more variation of the hypothesis and is more likely to classify the hypothesis as similar to the original data.
+                    </paragraph>
+                </description>
+                <process version="7.5.003">
+                    <context>
+                        <input/>
+                        <output/>
+                        <macros/>
+                    </context>
+                    <operator activated="true" class="process" compatibility="7.6.000-SNAPSHOT" expanded="true" name="Process">
+                        <process expanded="true">
+                            <operator activated="true" class="retrieve" compatibility="7.6.000-SNAPSHOT" expanded="true" height="68" name="Retrieve Iris" width="90" x="45" y="34">
+                                <parameter key="repository_entry" value="//Samples/data/Iris"/>
+                            </operator>
+                            <operator activated="true" class="multiply" compatibility="7.6.000-SNAPSHOT" expanded="true" height="103" name="Multiply" width="90" x="179" y="34"/>
+                            <operator activated="true" class="shuffle" compatibility="7.6.000-SNAPSHOT" expanded="true" height="82" name="Shuffle" width="90" x="313" y="595">
+                                <parameter key="use_local_random_seed" value="true"/>
+                                <parameter key="local_random_seed" value="5"/>
+                            </operator>
+                            <operator activated="true" class="hypgraphs:attribute_2_transition_matrix" compatibility="0.2.000" expanded="true" height="82" name="Attribute to Transition Matrix (2)" width="90" x="447" y="595">
+                                <parameter key="transition_attribute_name" value="label"/>
+                                <description align="center" color="green" colored="true" width="126">Shuffling the data leads to another matrix, where the transitions are nearly equally distributed.</description>
+                            </operator>
+                            <operator activated="true" class="hypgraphs:attribute_2_transition_matrix" compatibility="0.2.000" expanded="true" height="82" name="Attribute to Transition Matrix" width="90" x="447" y="34">
+                                <parameter key="transition_attribute_name" value="label"/>
+                                <description align="center" color="green" colored="true" width="126">Calculates the transistion matrix for the label Attribute.&lt;br&gt;&lt;br&gt;There are nine possible transitions for the three different values (thus the result is a 3x3 ExampleSet).&lt;br&gt;&lt;br&gt;Because the Examples are ordered, most transistions are from one value to itself.</description>
+                            </operator>
+                            <operator activated="true" class="concurrency:loop" compatibility="7.5.000-SNAPSHOT" expanded="true" height="103" name="Loop" width="90" x="715" y="34">
+                                <parameter key="number_of_iterations" value="10"/>
+                                <parameter key="iteration_macro" value="belief_factor"/>
+                                <process expanded="true">
+                                    <operator activated="true" class="hypgraphs:hyp_graphs" compatibility="0.2.000" expanded="true" height="82" name="HypGraphs" width="90" x="447" y="34">
+                                        <parameter key="belief factor" value="%{belief_factor}"/>
+                                        <description align="center" color="green" colored="false" width="126">Setting the belief factor to the current iteration number (ranging from 1 to 10)</description>
+                                    </operator>
+                                    <connect from_port="input 1" to_op="HypGraphs" to_port="data"/>
+                                    <connect from_op="HypGraphs" from_port="evidence" to_port="output 1"/>
+                                    <portSpacing port="source_input 1" spacing="0"/>
+                                    <portSpacing port="source_input 2" spacing="0"/>
+                                    <portSpacing port="source_input 3" spacing="0"/>
+                                    <portSpacing port="sink_output 1" spacing="0"/>
+                                    <portSpacing port="sink_output 2" spacing="0"/>
+                                </process>
+                            </operator>
+                            <operator activated="true" class="append" compatibility="7.6.000-SNAPSHOT" expanded="true" height="82" name="Append" width="90" x="983" y="34"/>
+                            <connect from_op="Retrieve Iris" from_port="output" to_op="Multiply" to_port="input"/>
+                            <connect from_op="Multiply" from_port="output 1" to_op="Attribute to Transition Matrix" to_port="exa"/>
+                            <connect from_op="Multiply" from_port="output 2" to_op="Shuffle" to_port="example set input"/>
+                            <connect from_op="Shuffle" from_port="example set output" to_op="Attribute to Transition Matrix (2)" to_port="exa"/>
+                            <connect from_op="Attribute to Transition Matrix (2)" from_port="trans" to_op="Loop" to_port="input 2"/>
+                            <connect from_op="Attribute to Transition Matrix" from_port="trans" to_op="Loop" to_port="input 1"/>
+                            <connect from_op="Loop" from_port="output 1" to_op="Append" to_port="example set 1"/>
+                            <connect from_op="Append" from_port="merged set" to_port="result 1"/>
+                            <portSpacing port="source_input 1" spacing="0"/>
+                            <portSpacing port="sink_result 1" spacing="0"/>
+                            <portSpacing port="sink_result 2" spacing="0"/>
+                            <description align="center" color="green" colored="true" height="105" resized="false" width="180" x="663" y="151">Looping over different values for the belief factor k of the HypGraphs Operator.</description>
+                            <description align="center" color="green" colored="true" height="239" resized="false" width="180" x="926" y="142">Merging the results.&lt;br/&gt;For a greater belief factor the evidence values moves slightly away from the evidence scores of the random transitions.&lt;br/&gt;&lt;br/&gt;This can be best observed when plotting the evidence scores as a series plot&lt;br/&gt;&lt;br/&gt;</description>
+                        </process>
+                    </operator>
+                </process>
+            </tutorialProcess>
+        </tutorialProcesses>
 
         <relatedDocuments>
-            <!-- ... -->
         </relatedDocuments>
     </operator>
 </p1:documents>

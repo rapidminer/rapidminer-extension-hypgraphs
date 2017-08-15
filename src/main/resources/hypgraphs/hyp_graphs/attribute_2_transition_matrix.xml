@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../rapidminerreferencemanual/documentation2html.xsl"?>
+<p1:documents xmlns:p1="http://rapid-i.com/schemas/documentation/reference/1.0"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://rapid-i.com/schemas/documentation/reference/1.0 ">
+
+    <operator key="operator.hypgraphs:attribute_2_transition_matrix" locale="en"
+              version="7.5.000">
+        <title>Attribute to Transition Matrix</title>
+        <synopsis>This Operator takes a nominal Attribute and transform it into a transition matrix representation. </synopsis>
+        <text>
+            <paragraph> The result of this Operator is an ExampleSet which represents a transition matrix.
+                In general a transition represents the change from one state to another.
+                In this case the states are given by the sequence of the values of the selected Attribute.
+                The Operator counts how often each nominal value follows another value.
+                Each Example in the matrix shows the count of occurrences of the values indicated by the Attribute name and the ID Attribute.
+            </paragraph>
+        </text>
+        <inputPorts>
+            <port name="example set input" type="com.rapidminer.example.ExampleSet">
+                An ExampleSet that contains the nominal Attribute for which the transition matrix will be build.
+            </port>
+        </inputPorts>
+        <outputPorts>
+            <port name="transition matrix" type="com.rapidminer.example.ExampleSet">
+                The transition matrix represented as a simple ExampleSet. Each Example represents the number of transitions between two nominal values. The Attribute name and the ID column indicate which transition is encoded.
+            </port>
+            <port name="original" type="com.rapidminer.example.ExampleSet">
+                The unmodified input ExampleSet.
+            </port>
+        </outputPorts>
+
+
+         <tutorialProcesses>
+             <tutorialProcess key="process.hypgraphs.transitionExample" title="Building the transition matrix for the Iris ExampleSet">
+                 <description>
+                     <paragraph>
+                         This tutorial Process takes the Iris data and builds the transition matrix the label Attribute.
+                         This Attribute has three different values (for the three observed species of the Iris flower), thus there are nine possible transitions.
+                         Because the data is originally ordered, most transitions are from value to itself.
+                         But if the ExampleSet is shuffled, the transitions are distributed more equally between all possible combinations.
+                     </paragraph>
+                 </description>
+                 <process version="7.5.003">
+                     <context>
+                         <input/>
+                         <output/>
+                         <macros/>
+                     </context>
+                     <operator activated="true" class="process" compatibility="7.6.000-SNAPSHOT" expanded="true" name="Process">
+                         <process expanded="true">
+                             <operator activated="true" class="retrieve" compatibility="7.6.000-SNAPSHOT" expanded="true" height="68" name="Retrieve Iris" width="90" x="45" y="34">
+                                 <parameter key="repository_entry" value="//Samples/data/Iris"/>
+                             </operator>
+                             <operator activated="true" class="multiply" compatibility="7.6.000-SNAPSHOT" expanded="true" height="103" name="Multiply" width="90" x="279" y="34"/>
+                             <operator activated="true" class="shuffle" compatibility="7.6.000-SNAPSHOT" expanded="true" height="82" name="Shuffle" width="90" x="514" y="595"/>
+                             <operator activated="true" class="hypgraphs:attribute_2_transition_matrix" compatibility="0.2.000" expanded="true" height="82" name="Attribute to Transition Matrix (2)" width="90" x="715" y="595">
+                                 <parameter key="transition_attribute_name" value="label"/>
+                                 <description align="center" color="green" colored="true" width="126">Shufling the data leads to another matrix, where the transistions are nearly equally distributed.</description>
+                             </operator>
+                             <operator activated="true" class="hypgraphs:attribute_2_transition_matrix" compatibility="0.2.000" expanded="true" height="82" name="Attribute to Transition Matrix" width="90" x="715" y="34">
+                                 <parameter key="transition_attribute_name" value="label"/>
+                                 <description align="center" color="green" colored="true" width="126">Calculates the transistion matrix for the label Attribute.&lt;br/&gt;&lt;br/&gt;There are nine possible transitions for the three different values (thus the result is a 3x3 ExampleSet).&lt;br/&gt;&lt;br/&gt;Because the Examples are ordered, most transistions are from one value to itself.</description>
+                             </operator>
+                             <connect from_op="Retrieve Iris" from_port="output" to_op="Multiply" to_port="input"/>
+                             <connect from_op="Multiply" from_port="output 1" to_op="Attribute to Transition Matrix" to_port="exa"/>
+                             <connect from_op="Multiply" from_port="output 2" to_op="Shuffle" to_port="example set input"/>
+                             <connect from_op="Shuffle" from_port="example set output" to_op="Attribute to Transition Matrix (2)" to_port="exa"/>
+                             <connect from_op="Attribute to Transition Matrix (2)" from_port="trans" to_port="result 2"/>
+                             <connect from_op="Attribute to Transition Matrix" from_port="trans" to_port="result 1"/>
+                             <portSpacing port="source_input 1" spacing="0"/>
+                             <portSpacing port="sink_result 1" spacing="0"/>
+                             <portSpacing port="sink_result 2" spacing="0"/>
+                             <portSpacing port="sink_result 3" spacing="0"/>
+                         </process>
+                     </operator>
+                 </process>
+             </tutorialProcess>
+
+         </tutorialProcesses>
+
+        <relatedDocuments>
+            <!-- ... -->
+        </relatedDocuments>
+    </operator>
+</p1:documents>

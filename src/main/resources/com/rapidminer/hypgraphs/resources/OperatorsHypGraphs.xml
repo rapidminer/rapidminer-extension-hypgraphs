@@ -6,5 +6,10 @@
               <icon>hyp_graphs.png</icon>
               <class>com.rapidminer.extension.hypgraphs.HypGraphs</class>
            </operator>
+            <operator>
+                <key>attribute_2_transition_matrix</key>
+                <icon>hyp_graphs.png</icon>
+                <class>com.rapidminer.extension.hypgraphs.Attribute2TransitionMatrix</class>
+            </operator>
          </group>
 </operators>

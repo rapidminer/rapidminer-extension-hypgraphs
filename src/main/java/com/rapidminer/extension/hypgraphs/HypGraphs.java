@@ -3,7 +3,7 @@ package com.rapidminer.extension.hypgraphs;
 import java.util.Iterator;
 import java.util.List;
 
-import org.antlr.v4.runtime.atn.SemanticContext.Operator;
+import com.rapidminer.example.Attribute;
 import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.gesis.css.hyptrails4j.DirichletPriorGenerator;
@@ -13,6 +13,7 @@ import org.gesis.css.hyptrails4j.MatrixUtils;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.ExampleSetFactory;
+import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.UserError;
@@ -25,10 +26,10 @@ import com.rapidminer.parameter.ParameterTypeInt;
 
 public class HypGraphs extends Operator {
 
-	public static final String PARAMETER_K = "k";
+	public static final String PARAMETER_K = "belief factor";
 
 	private InputPort dataInput = getInputPorts().createPort("data");
-	private InputPort hypothesisInput = getInputPorts().createPort("hypo");
+	private InputPort hypothesisInput = getInputPorts().createPort("hypothesis");
 
 	private OutputPort evidenceOutput = getOutputPorts().createPort("evidence");
 	private OutputPort priorOutput = getOutputPorts().createPort("prior");
@@ -118,11 +119,12 @@ public class HypGraphs extends Operator {
 		double[][] rawPriorHypothesis = priorHypothesis.getData();
 		ExampleSet returnPriorHypothesis = ExampleSetFactory.createExampleSet(rawPriorHypothesis);
 
-		double[][] evidences = { { evidenceData, evidenceHypothesis, evidenceRandom } };
+		double[][] evidences = { { k, evidenceData, evidenceHypothesis, evidenceRandom } };
 		ExampleSet returnEvidence = ExampleSetFactory.createExampleSet(evidences);
-		returnEvidence.getAttributes().get("att1").setName("Evidence Data");
-		returnEvidence.getAttributes().get("att2").setName("Evidence Hypothesis");
-		returnEvidence.getAttributes().get("att3").setName("Evidence Random");
+		returnEvidence.getAttributes().get("att1").setName("Belief Factor");
+		returnEvidence.getAttributes().get("att2").setName("Evidence Data");
+		returnEvidence.getAttributes().get("att3").setName("Evidence Hypothesis");
+		returnEvidence.getAttributes().get("att4").setName("Evidence Random");
 
 		evidenceOutput.deliver(returnEvidence);
 		priorOutput.deliver(returnPriorHypothesis);
@@ -132,7 +134,8 @@ public class HypGraphs extends Operator {
 	@Override
 	public List<ParameterType> getParameterTypes() {
 		List<ParameterType> types = super.getParameterTypes();
-		ParameterType type = new ParameterTypeInt(PARAMETER_K, "parameter_k", 1, Integer.MAX_VALUE, 1);
+		ParameterType type = new ParameterTypeInt(PARAMETER_K, "belief_factor", 1, Integer.MAX_VALUE, 1);
+		type.setOptional(false);
 		type.setExpert(false);
 		types.add(type);
 		return types;
