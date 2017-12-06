@@ -43,7 +43,7 @@ extensionConfig {
      *
      * It is 'www.rapidminer.com' by default.
      */
-    homepage = "www.fee-projekt.de"
+    // homepage = "www.fee-projekt.de"
 
 	// define RapidMiner version and extension dependencies
 	dependencies {

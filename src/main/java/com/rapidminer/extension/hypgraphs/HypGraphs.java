@@ -4,6 +4,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.rapidminer.example.Attribute;
+import com.rapidminer.operator.ports.metadata.AttributeMetaData;
+import com.rapidminer.operator.ports.metadata.ExampleSetMetaData;
+import com.rapidminer.operator.ports.metadata.GenerateNewExampleSetMDRule;
+import com.rapidminer.operator.ports.metadata.MetaData;
+import com.rapidminer.tools.Ontology;
 import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.gesis.css.hyptrails4j.DirichletPriorGenerator;
@@ -36,7 +41,20 @@ public class HypGraphs extends Operator {
 
 	public HypGraphs(OperatorDescription description) {
 		super(description);
-		getTransformer().addRule(new PassThroughRule(dataInput, evidenceOutput, false));
+
+		getTransformer().addRule(new GenerateNewExampleSetMDRule(evidenceOutput) {
+
+			@Override
+			public void transformMD() {
+				ExampleSetMetaData md = new ExampleSetMetaData();
+				md.addAttribute(new AttributeMetaData("Belief Factor", Ontology.NOMINAL));
+				md.addAttribute(new AttributeMetaData("Evidence Data", Ontology.REAL));
+				md.addAttribute(new AttributeMetaData("Evidence Hypothesis", Ontology.REAL));
+				md.addAttribute(new AttributeMetaData("Evidence Random", Ontology.REAL));
+				evidenceOutput.deliverMD(md);
+			}
+		});
+
 	}
 
 	@Override
